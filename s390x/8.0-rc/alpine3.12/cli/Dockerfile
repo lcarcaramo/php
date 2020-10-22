@@ -163,8 +163,9 @@ RUN set -eux; \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --no-cache $runDeps; \
-	\
+	apk add --no-cache $runDeps \
+			   php-pear \
+	; \
 	apk del --no-network .build-deps; \
 	\
 # smoke test
