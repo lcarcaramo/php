@@ -3,7 +3,7 @@ services:
   - docker
 env:
   global:
-    - TEST_DIR="$PWD/s390x/test/8.0-rc/alpine3.12/cli"
+    - TEST_DIR="$PWD/s390x/test/8.0-rc/alpine3.12/cl"
     - TEST_SCRIPT="test.sh"
     - BUILD_DIR="$PWD/s390x/8.0-rc/alpine3.12/cli"
     - REPO="quay.io/ibmz/php"
