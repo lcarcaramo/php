@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM quay.io/ibmz/alpine:3.12
 
 # dependencies required for running "phpize"
 # these get automatically installed and removed by "docker-php-ext-*" (unless they're already installed)
