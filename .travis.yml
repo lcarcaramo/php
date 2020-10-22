@@ -1,0 +1,19 @@
+arch: s390x
+services:
+  - docker
+env:
+  global:
+    - TEST_DIR="$PWD/s390x/test/8.0-rc/alpine3.12/cli"
+    - TEST_SCRIPT="test.sh"
+    - BUILD_DIR="$PWD/s390x/8.0-rc/alpine3.12/cli"
+    - REPO="quay.io/ibmz/php"
+    - TAG="$REPO:8.0-rc-cli"
+before_script: 
+  - cd $BUILD_DIR && chmod +x *
+  - cd $TEST_DIR && chmod +x $TEST_SCRIPT
+  - docker login quay.io -u $ROBOT -p $ROBOT_TOKEN
+script: 
+  - docker build $BUILD_DIR --tag $TAG
+  - cd $TEST_DIR && bash $TEST_SCRIPT 
+after_script:
+  - docker push $REPO
