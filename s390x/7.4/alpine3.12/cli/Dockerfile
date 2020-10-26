@@ -3,13 +3,9 @@ FROM quay.io/ibmz/alpine:3.12
 # dependencies required for running "phpize"
 # these get automatically installed and removed by "docker-php-ext-*" (unless they're already installed)
 ENV PHPIZE_DEPS \
-		autoconf \
 		dpkg-dev dpkg \
 		file \
 		g++ \
-		gcc \
-		libc-dev \
-		make \
 		pkgconf \
 		re2c
 
