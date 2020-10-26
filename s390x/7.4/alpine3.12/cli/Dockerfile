@@ -50,11 +50,11 @@ ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_
 ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -pie"
 
-ENV GPG_KEYS 1729F83938DA44E27BA0F4D3DBDB397470D12172 BFDDD28642824F8118EF77909B67A5C12229118F
+ENV GPG_KEYS 42670A7FE4D0441C8E4632349E4FDC074A4EF02D 5A52880781F755608BF815FC910DEB46F53EA312
 
-ENV PHP_VERSION 8.0.0RC2
-ENV PHP_URL="https://downloads.php.net/~pollita/php-8.0.0RC2.tar.xz" PHP_ASC_URL="https://downloads.php.net/~pollita/php-8.0.0RC2.tar.xz.asc"
-ENV PHP_SHA256="97d8031ba1095c3222fc5725710ac18dc4f584e526cbcbfb2817146abb6891ec" PHP_MD5=""
+ENV PHP_VERSION 7.4.11
+ENV PHP_URL="https://www.php.net/distributions/php-7.4.11.tar.xz" PHP_ASC_URL="https://www.php.net/distributions/php-7.4.11.tar.xz.asc"
+ENV PHP_SHA256="5d31675a9b9c21b5bd03389418218c30b26558246870caba8eb54f5856e2d6ce" PHP_MD5=""
 
 RUN set -eux; \
 	\
@@ -139,6 +139,10 @@ RUN set -eux; \
 		--with-openssl \
 		--with-zlib \
 		\
+# in PHP 7.4+, the pecl/pear installers are officially deprecated (requiring an explicit "--with-pear")
+# ... and are removed in PHP 8+; see also https://github.com/docker-library/php/pull/847#issuecomment-505638229
+		--with-pear \
+		\
 # bundled pcre does not support JIT on s390x
 # https://manpages.debian.org/stretch/libpcre3-dev/pcrejit.3.en.html#AVAILABILITY_OF_JIT_SUPPORT
 		$(test "$gnuArch" = 's390x-linux-musl' && echo '--without-pcre-jit') \
@@ -163,10 +167,13 @@ RUN set -eux; \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --no-cache $runDeps \
-			   php-pear \
-	; \
+	apk add --no-cache $runDeps; \
+	\
 	apk del --no-network .build-deps; \
+	\
+# update pecl channel definitions https://github.com/docker-library/php/issues/443
+	pecl update-channels; \
+	rm -rf /tmp/pear ~/.pearrc; \
 	\
 # smoke test
 	php --version
