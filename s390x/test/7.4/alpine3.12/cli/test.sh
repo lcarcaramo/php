@@ -24,7 +24,7 @@ print_test_case () {
 }
 
 print_success () {
-        echo -e "\n $ANSI_GREEN$1 $ANSI_RESET \n"
+        echo -e "\n$ANSI_GREEN$1 $ANSI_RESET \n"
 
 }
 
