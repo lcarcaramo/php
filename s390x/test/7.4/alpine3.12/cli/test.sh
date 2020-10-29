@@ -15,7 +15,7 @@ export TEST_SUITE_END="************************************** TEST SUCCESSFUL **
 
 # Pass in path to folder where Dockerfile lives
 print_dockerfile () {
-        echo -e "\n$ANSI_CYAN$DOCKERFILE_TOP\n$(<$1/Dockerfile)\n$DOCKERFILE_BOTTOM $ANSI_RESET\n"
+        echo -e "\n$ANSI_CYAN$DOCKERFILE_TOP\n$(<$1/Dockerfile)\n$ANSI_CYAN$DOCKERFILE_BOTTOM $ANSI_RESET\n"
 }
 
 # Pass in test case message
