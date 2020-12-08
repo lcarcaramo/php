@@ -1,9 +1,11 @@
 # Tags
 
-> _Built from [`quay.io/ibmz/alpine:3.12`](https://quay.io/repository/ibmz/alpine?tab=info)_
--	[`7.4-cli`](https://github.com/lcarcaramo/php/blob/master/s390x/8.0-rc/alpine3.12/cli/Dockerfile) - [![Build Status](https://travis-ci.com/lcarcaramo/php.svg?branch=master)](https://travis-ci.com/lcarcaramo/php)
+> _Built from [`quay.io/ibm/alpine:3.12`](https://quay.io/repository/ibm/alpine?tab=info)_
+-	`7.4-cli` - [![Build Status](https://travis-ci.com/lcarcaramo/php.svg?branch=master)](https://travis-ci.com/lcarcaramo/php)
 
-# What is PHP?
+### __[Original Source Code](https://github.com/docker-library/php)__
+
+# PHP
 
 PHP is a server-side scripting language designed for web development, but which can also be used as a general-purpose programming language. PHP can be added to straight HTML or it can be used with a variety of templating engines and web frameworks. PHP code is usually processed by an interpreter, which is either implemented as a native module on the web-server or as a common gateway interface (CGI).
 
@@ -18,7 +20,7 @@ Note that we only provide the PHP runtime, PECL, and tooling to to assist in ins
 ### Create a `Dockerfile` in your PHP project
 
 ```dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 COPY . /usr/src/myapp
 WORKDIR /usr/src/myapp
 CMD [ "php", "./your-script.php" ]
@@ -40,7 +42,7 @@ We provide the helper scripts `docker-php-ext-configure`, `docker-php-ext-instal
 In order to keep the images smaller, PHP's source is kept in a compressed tar file. To facilitate linking of PHP's source with any extension, we also provide the helper script `docker-php-source` to easily extract the tar or delete the extracted source. Note: if you do use `docker-php-source` to extract the source, be sure to delete it in the same layer of the docker image.
 
 ```Dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 RUN docker-php-source extract \
 	# do important things \
 	&& docker-php-source delete
@@ -51,7 +53,7 @@ RUN docker-php-source extract \
 Write a `Dockerfile` like to following to get the 'gd' extension
 
 ```Dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 RUN apk add --no-cache \
         freetype-dev \
         libjpeg-turbo-dev \
@@ -75,14 +77,14 @@ Some extensions are compiled by default. This depends on the PHP version you are
 Some extensions are not provided with the PHP source, but are instead available through [PECL](https://pecl.php.net/). To install a PECL extension, use `pecl install` to download and compile it, then use `docker-php-ext-enable` to enable it:
 
 ```dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 RUN pecl install redis-5.1.1 \
 	&& pecl install xdebug-2.8.1 \
 	&& docker-php-ext-enable redis xdebug
 ```
 
 ```dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 RUN apt-get update && apt-get install -y libmemcached-dev zlib1g-dev \
 	&& pecl install memcached-2.2.0 \
 	&& docker-php-ext-enable memcached
@@ -103,7 +105,7 @@ Some extensions are not provided via either Core or PECL; these can be installed
 > _Note that the following examples use an extension that is able to be installed with PECL for illustration purposes._
 
 ```dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 RUN apk add --no-cache \
          pkgconf \
          zlib-dev \
@@ -126,7 +128,7 @@ RUN apk add --no-cache \
 The `docker-php-ext-*` scripts *can* accept an arbitrary path, but it must be absolute (to disambiguate from built-in extension names), so the above example could also be written as the following:
 
 ```dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 RUN apk add --no-cache \
          pkgconf \
          zlib-dev \
@@ -151,7 +153,7 @@ The default config can be customized by copying configuration files into the `$P
 ### Example
 
 ```dockerfile
-FROM quay.io/ibmz/php:7.4-cli
+FROM quay.io/ibm/php:7.4-cli
 
 # Use the default production configuration
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
